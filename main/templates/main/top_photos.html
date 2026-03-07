@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>ТОП Фото</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animation.css' %}">
+</head>
+
+<body>
+
+<section id="top" class="main style3 top-section">
+    <div class="content">
+
+        <header class="top-header">
+            <a href="{% url 'index' %}#work" class="button small">
+                ← Повернутись до галереї
+            </a>
+            <h2>🔥 ТОП Фото</h2>
+        </header>
+
+        <div class="top-gallery">
+            {% for photo in photos %}
+                <article>
+                    <a href="{{ photo.image_full.url }}" class="image fit">
+                        <img src="{{ photo.image_thumb.url }}" loading="lazy" alt="">
+                    </a>
+                    <p class="likes-count">
+                        ❤️ {{ photo.likes_count }}
+                    </p>
+                </article>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.poptrox.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+<script src="{% static 'assets/js/browser.min.js' %}"></script>
+<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+<script src="{% static 'assets/js/util.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+</html>

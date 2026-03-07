@@ -1,0 +1,417 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профіль {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animation.css' %}">
+    <style>
+        .profile-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-image: url("/static/assets/images/profile-bg.jpg");
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-blend-mode: multiply;
+        }
+
+        .profile-card h1 {
+            margin: 0;
+        }
+
+        .profile-card a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 30px 0 15px;
+            font-size: 1.6em;
+            border-left: 5px solid #6c63ff;
+            padding-left: 10px;
+        }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .album-block {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .album-block:hover {
+            transform: translateY(-5px);
+        }
+
+        .album-photos {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .album-photos img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .simple-list p {
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+        }
+
+        .avatar-img {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: 0.3s ease;
+        }
+
+        .avatar-wrapper:hover .avatar-img {
+            transform: scale(1.05);
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: -35px;
+            background: linear-gradient(135deg, #6c63ff, #5848e5);
+            color: white;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 18px rgba(108,99,255,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .avatar-overlay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108,99,255,0.6);
+}
+
+        .avatar-form button {
+            margin-top: 10px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: none;
+            background: #6c63ff;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .avatar-form button:hover {
+            background: #5848e5;
+        }
+
+        .profile-card a {
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: #eee;
+            transition: 0.3s;
+        }
+
+        .profile-card a:hover {
+            background: #ddd;
+        }
+
+        .create-album-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 22px;
+            border-radius: 25px;
+            background: #6c63ff;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .create-album-btn:hover {
+            background: #5848e5;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-main {
+            padding: 10px 22px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s ease;
+            display: inline-block;
+            color: cornflowerblue;
+        }
+
+        .btn-password {
+            background: linear-gradient(135deg, #ff6b6b, #e63946);
+        }
+
+        .btn-password:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(230,57,70,0.4);
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, #6c63ff, #5848e5);
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(88,72,229,0.4);
+        }
+
+        .btn-delete-comment {
+            background: #eee;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        .btn-delete-comment:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .profile-fields{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .field label{
+            font-size:13px;
+            color:#444;
+        }
+
+        .field input{
+            height:32px;
+            padding:5px 10px;
+            border-radius:6px;
+            border:1px solid #ccc;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="box profile-page">
+<div class="profile-container">
+    {% if messages %}
+    <div class="messages-box">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Профіль -->
+    <div class="profile-card zoom">
+    <div style="display:flex; align-items:center; gap:20px;">
+        <div>
+            <div class="avatar-wrapper">
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" class="avatar-img" id="avatarPreview">
+                {% else %}
+                    <img src="{% static 'images/default-avatar.png' %}" class="avatar-img" id="avatarPreview">
+                {% endif %}
+
+                {% if request.user == profile.user %}
+                <label for="avatarInput" class="avatar-overlay">
+                    Змінити
+                </label>
+                {% endif %}
+            </div>
+
+            {% if request.user == profile.user %}
+            <form method="POST" enctype="multipart/form-data" class="avatar-form">
+                {% csrf_token %}
+                <input type="file" name="avatar" id="avatarInput" hidden>
+            </form>
+            {% endif %}
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p class="profile-email">{{ user.email }}</p>
+            </div>
+
+            {% if request.user == profile.user %}
+            <form method="POST" class="profile-edit-form" style="margin-top:20px;">
+                {% csrf_token %}
+                <div class="profile-fields">
+                    <div class="field">
+                        <label>First name</label>
+                        {{ user_form.first_name }}
+                    </div>
+
+                    <div class="field">
+                        <label>Last name</label>
+                        {{ user_form.last_name }}
+                    </div>
+
+                    <div class="field">
+                        <label>Email address</label>
+                        {{ user_form.email }}
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-animate">Зберегти зміни</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'password_change' %}" class="btn-main btn-password">
+            🔐 Змінити пароль
+        </a>
+
+        <a href="{% url 'index' %}" class="btn-main btn-home">
+            ← На головну
+        </a>
+    </div>
+</div>
+
+    <!-- Мої альбоми -->
+    <h1 class="section-title">Мої альбоми</h1>
+
+        <a href="{% url 'album_create' %}" class="create-album-btn">+ Створити альбом</a>
+    <div class="album-grid">
+        {% for album in my_albums %}
+            <div class="album-block zoom">
+                <h3>{{ album.title }}</h3>
+                <p>{{ album.description }}</p>
+                <p>❤️ {{ album.likes_count }} лайків</p>
+                    <div class="album-actions">
+                        <a href="{% url 'album_edit' album.pk %}" class="btn btn-edit">
+                            ✏ Редагувати
+                        </a>
+
+                        <a href="{% url 'album_delete' album.pk %}" class="btn btn-delete">
+                            🗑 Видалити
+                        </a>
+                    </div>
+                <div class="album-photos">
+                    {% for photo in album.photos.all %}
+                        <img src="{{ photo.image_thumb.url }}">
+                    {% endfor %}
+                </div>
+            </div>
+
+        {% empty %}
+            <p>Немає альбомів</p>
+        {% endfor %}
+    </div>
+
+    <!-- Лайки -->
+    <h1 class="section-title">Альбоми, які я лайкнув</h1>
+    <div class="simple-list">
+        <section>
+            <ul class="liked-list">
+            {% for album in my_likes %}
+                <li>
+                    <span>👍 {{ album.title }}</span>
+                    <span>{{ album.likes_count }}</span>
+                </li>
+            {% empty %}
+                <p>Ще не лайкали</p>
+            {% endfor %}
+            </ul>
+        </section>
+    </div>
+
+    <h1 class="section-title">Фото, які я лайкнув</h1>
+
+    <div class="album-grid">
+        {% for photo in liked_photos %}
+            <div class="album-block zoom">
+                <img src="{{ photo.image_thumb.url }}" style="width:100%; border-radius:8px;">
+                <p>❤️ {{ photo.likes_count }}</p>
+            </div>
+        {% empty %}
+            <p>Ще не лайкали фото</p>
+        {% endfor %}
+    </div>
+
+    <!-- Коментарі -->
+    <h1 class="section-title">Мої коментарі</h1>
+    <div class="simple-list">
+        {% for comment in my_comments %}
+        <div class="comment">
+            <div class="comment-album">{{ comment.album.title }}</div>
+            <div class="comment-text">{{ comment.text }}</div>
+
+            <form method="post" action="{% url 'delete_comment' comment.id %}" style="margin-top:5px;">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete-comment">🗑 Видалити</button>
+            </form>
+        </div>
+        {% empty %}
+        <p>Немає коментарів</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script src="{% static 'assets/js/animations.js' %}"></script>
+<script>
+const avatarInput = document.getElementById("avatarInput");
+const avatarForm = document.querySelector(".avatar-form");
+
+avatarInput?.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        document.getElementById("avatarPreview").src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+
+    // 🔥 автоматичне відправлення
+    avatarForm.submit();
+});
+</script>
+</div>
+</body>
+</html>

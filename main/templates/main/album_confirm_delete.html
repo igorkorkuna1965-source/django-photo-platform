@@ -1,0 +1,24 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+
+<div class="delete-wrapper">
+    <div class="delete-card">
+        <h2>Видалити альбом?</h2>
+        <p class="delete-warning">
+            Цю дію неможливо буде скасувати.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="delete-actions">
+                <button type="submit" class="btn btn-delete">
+                    🗑 Так, видалити
+                </button>
+
+                <a href="{% url 'profile' %}" class="btn btn-cancel">
+                    Скасувати
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        {% if form.instance.pk %}
+            Редагувати альбом
+        {% else %}
+            Створити альбом
+        {% endif %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animation.css' %}">
+
+    <style>
+         .preview-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .preview-grid img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+
+        .delete-photo-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4d4d;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 14px;
+            text-align: center;
+            line-height: 22px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .delete-photo-btn:hover {
+            background: #e60000;
+        }
+
+        .delete-photo-btn{
+            border:none;
+            cursor:pointer;
+            position:absolute;
+        }
+
+        .existing-photo {
+            position: relative;
+            display: inline-block;
+            overflow: visible;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>
+        {% if form.instance.pk %}
+            Редагувати альбом
+        {% else %}
+            Створити альбом
+        {% endif %}
+    </h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Назва</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-group">
+            <label>Опис</label>
+            {{ form.description }}
+        </div>
+
+        <div class="form-group">
+            <label>Фотографії</label>
+            <input type="file" name="images" multiple accept="image/*" id="imageInput">
+        </div>
+
+        <div class="preview-grid">
+
+        {% if form.instance.pk %}
+            {% for photo in form.instance.photos.all %}
+            <div class="existing-photo">
+
+                <img src="{{ photo.image_thumb.url }}">
+
+                <button type="button" class="delete-photo-btn" data-photo="{{ photo.id }}">✕</button>
+
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <div id="imagePreview"></div>
+
+        </div>
+
+        <button type="submit" class="btn-primary">
+            {% if form.instance.pk %}
+                Зберегти зміни
+            {% else %}
+                Створити
+            {% endif %}
+        </button>
+    </form>
+
+    <a href="{% url 'profile' %}" class="btn-secondary">← Назад до профілю</a>
+</div>
+
+<script src="{% static 'assets/js/album_form.js' %}"></script>
+
+</body>
+</html>

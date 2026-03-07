@@ -1,0 +1,59 @@
+.profile-card {
+    max-width: 400px;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+}
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar-img {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.avatar-wrapper:hover .avatar-img {
+    transform: scale(1.03);
+}
+
+.avatar-overlay {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #111;
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+.avatar-overlay:hover {
+    opacity: 1;
+}
+
+.avatar-form {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background: #111;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #333;
+}

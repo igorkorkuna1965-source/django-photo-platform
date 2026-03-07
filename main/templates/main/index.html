@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+        <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+        <link rel="stylesheet" href="{% static 'assets/css/animation.css' %}">
+		<title>Любительські та професійні фото</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <noscript><link rel="stylesheet" href="{%  static 'assets/css/noscript.css' %}" /></noscript>
+	</head>
+
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<h1>Фотографія — це спосіб відчувати, торкатися, любити</h1>
+				<nav class="nav-animated">
+					<ul>
+						<li><a href="#intro" data-text="Привіт">Привіт</a></li>
+						<li><a href="#one" data-text="Про мене">Про мене</a></li>
+						<li><a href="#two" data-text="Про моє захоплення">Про моє захоплення</a></li>
+						<li><a href="#work" data-text="Альбоми">Альбоми</a></li>
+						<li><a href="#contact" data-text="Контакти">Контакти</a></li>
+                        {% if user.is_authenticated %}
+
+                        <li class="header-avatar">
+                            <a href="{% url 'profile' %}">
+                                <img src="{% if user.profile.avatar %}
+                                            {{ user.profile.avatar.url }}
+                                         {% else %}
+                                            {% static 'images/default-avatar.png' %}
+                                         {% endif %}"
+                                     alt="avatar">
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'profile' %}" data-text="Профіль">Профіль</a>
+                        </li>
+
+                        <li>
+                            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button class="nav-logout">Вийти</button>
+                            </form>
+                        </li>
+
+                        {% else %}
+
+                        <li>
+                            <a href="{% url 'login' %}" data-text="Увійти">Увійти</a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'signup' %}" data-text="Реєстрація">Реєстрація</a>
+                        </li>
+
+                        {% endif %}
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Intro -->
+			<section id="intro" class="main style1 dark fullscreen">
+				<div class="content">
+					<header>
+						<h2>Вітаю</h2>
+					</header>
+					<p>Цей сайт створено з метою розміщення любительських та професійних фотографій.</p>
+					<footer>
+						<a href="#one" class="button style2 down">More</a>
+					</footer>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style2 right dark fullscreen">
+				<div class="content box style2">
+					<header>
+						<h1>Фотографія — це спонтанний імпульс до постійної візуальної уваги, яка здатна вловити і мить, і вічність</h1>
+					</header>
+					<p>Мене звати Надія. Мені подобається, що за допомогою камери можна побачити світ по-іншому.
+                        Те, на що ми зазвичай не звертаємо уваги — крапля дощу на листку, промінь сонця між будинками,
+                        щира посмішка людини — у фотографії набуває особливого значення.
+                        Фотограф вчиться помічати красу в дрібницях і цінувати прості моменти.</p>
+				</div>
+				<a href="#two" class="button style2 down anchored">Next</a>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="main style2 left dark fullscreen">
+				<div class="content box style2">
+					<header>
+						<h1>Коли ви фотографуєте обличчя… ви фотографуєте душу, що стоїть за ним</h1>
+					</header>
+					<p>Фотографія — для мене це особливе мистецтво, яке дозволяє зупинити мить і зберегти емоції,
+                        настрій та атмосферу певного моменту. Це поєднання самовираження та способу зберегти спогади.
+                        Фотографія також допомагає виражати власні почуття та думки без слів. Кожен знімок може розповісти історію:
+                        про радість, сум, спокій або надію.</p>
+				</div>
+				<a href="#work" class="button style2 down anchored">Next</a>
+			</section>
+
+        <!-- Work -->
+			<section id="work" class="work-mesh">
+				<div class="content">
+					<header>
+						<h2>Альбоми</h2>
+                        <a href="{% url 'top_photos' %}" class="top-button" style="margin-bottom:15px;">
+                            Переглянути ТОП фото
+                        </a>
+						<p>Тут відображатимуться мої альбоми з фото</p>
+                        <p>Можете долучитись та викладати свої улюблені фотографії</p>
+					</header>
+
+					<!-- Gallery  -->
+						<div class="gallery">
+                            {% for album in albums %}
+                            <section class="album-block">
+                                <div class="album-header">
+                                    <h3>
+                                        <a href="{% url 'album_detail' album.id %}" class="album-link">
+                                            {{ album.title }}
+                                        </a>
+                                    </h3>
+                                    <p class="album-author">Автор: {{ album.user.username }}</p>
+                                    <p class="album-desc">{{ album.description }}</p>
+
+                                    <div class="album-rating">
+                                        <button
+                                            class="like-btn {% if user.is_authenticated and album.user_liked %}liked{% endif %}"
+                                            data-album="{{ album.id }}">
+                                            👍
+                                        </button>
+
+                                        {% if user.is_authenticated and album.user_liked %}
+                                            <span class="liked-text">Ви вже оцінили</span>
+                                        {% endif %}
+
+                                        <span class="likes-count">❤️ {{ album.likes_count }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="album-photos">
+                                    {% for photo in album.photos_with_likes %}
+                                        <article class="photo-item">
+                                            <a href="{{ photo.image_full.url }}" class="image fit">
+                                                <img src="{{ photo.image_thumb.url }}" />
+                                            </a>
+                                            <div class="photo-rating">
+                                                <span
+                                                    class="photo-like-btn {% if user.is_authenticated and photo.user_liked %}liked{% endif %}"
+                                                    data-photo="{{ photo.id }}">
+                                                    👍
+                                                </span>
+                                                <span class="photo-like-count">{{ photo.likes_count }}</span>
+                                            </div>
+                                        </article>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="comments">
+                                    <h4>Коментарі:</h4>
+
+                                    {% for comment in album.comments.all %}
+                                        <p><b>{{ comment.user.username }}:</b> {{ comment.text }}</p>
+                                    {% endfor %}
+
+                                    {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'add_comment' album.id %}">
+                                        {% csrf_token %}
+                                        <input type="text" name="text" placeholder="Ваш коментар" required>
+                                        <button type="submit">Надіслати</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+
+                            </section>
+                            {% endfor %}
+                        </div>
+                        <!-- ПАГІНАЦІЯ -->
+                        <div class="pagination" style="margin-top:40px; text-align:center;">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1#work">« Перша</a>
+                                <a href="?page={{ page_obj.previous_page_number }}#work">‹ Назад</a>
+                            {% endif %}
+
+                            <span style="margin:0 15px;">
+                                Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+                            </span>
+
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}#work">Вперед ›</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}#work">Остання »</a>
+                            {% endif %}
+                        </div>
+
+				</div>
+			</section>
+
+		<!-- Contact -->
+			<section id="contact" class="contact-bg fade-in">
+          			<div class="overlay">
+					<header>
+						<h2>Всім привіт.</h2>
+						<p>Завітайте на мої сторінки в соцмережах</p>
+                        <p>Зареєструйтесь та розміщуйте свої фото в мене на сайті</p>
+					</header>
+                        <div class="box contact-links">
+                            <ul class="contact-list">
+                                <li>
+                                    <a href="mailto:nadiyaboyko@gmail.com" class="icon solid fa-envelope">
+                                        <span>Email: nadiyaboyko@gmail.com</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://t.me/your_username" target="_blank" class="icon brands fa-telegram">
+                                        <span>Telegram</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://instagram/your_username" target="_blank" class="icon brands fa-instagram">
+                                        <span>Instagram</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://facebook/your_username" target="_blank" class="icon brands fa-facebook">
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+
+                <!-- Icons -->
+                    <ul class="icons">
+                        <img src="{% static 'images/beetroot.png' %}">
+                    </ul>
+                <li>
+                    <a href="https://beetroot.academy" target="_blank" class="icon brands fa-beetroot">                                 <span>Beetroot</span>
+                    </a>
+                </li>
+				<!-- Menu -->
+					<ul class="menu">
+                       <li>by Ihor Korkuna </li><li> 2026 </li>
+					</ul>
+
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}" ></script>
+			<script src="{% static 'assets/js/jquery.poptrox.min.js' %}" ></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}" ></script>
+			<script src="{% static "assets/js/jquery.scrollex.min.js" %}" ></script>
+			<script src="{% static 'assets/js/browser.min.js' %}" ></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}" ></script>
+			<script src="{% static 'assets/js/util.js' %}" ></script>
+			<script src="{% static 'assets/js/main.js' %}" ></script>
+            <script src="{% static 'assets/js/animations.js' %}"></script>
+            <script src="{% static 'assets/js/album_form.js' %}"></script>
+
+	</body>
+</html>
+

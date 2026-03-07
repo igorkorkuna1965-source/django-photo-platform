@@ -1,0 +1,27 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'assets/css/auth.css' %}">
+</head>
+<body class="auth-body">
+
+<div class="auth-card fade-in">
+    <h2>З поверненням</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Увійти</button>
+    </form>
+
+    <p class="auth-link">
+        Ще не зареєстровані? <a href="{% url 'signup' %}">Зареєструватись</a>
+    </p>
+</div>
+
+<script src="{% static 'assets/js/auth.js' %}"></script>
+</body>
+</html>

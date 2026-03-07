@@ -1,0 +1,232 @@
+/* Fade In */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide Left */
+.slide-left {
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+.nav-animated {
+    perspective: 800px;
+}
+
+.nav-animated a {
+    display: inline-block;
+    transform-style: preserve-3d;
+    transition:
+        transform 0.3s ease,
+        text-shadow 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* normal depth */
+.nav-animated a {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* hover 3D */
+.nav-animated a:hover {
+    transform:
+        translateY(-3px)
+        rotateX(15deg);
+    text-shadow:
+        0 6px 12px rgba(0,0,0,0.6);
+}
+
+/* press effect */
+.nav-animated a:active {
+    transform:
+        translateY(1px)
+        rotateX(0deg);
+}
+.slide-left.show {
+    animation: slideLeft 0.8s ease forwards;
+}
+
+@keyframes slideLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Zoom */
+.zoom {
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.zoom.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Hover card */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.nav-animated ul {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-animated li {
+    list-style: none;
+}
+
+.nav-animated a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 5px 0;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* underline effect */
+.nav-animated a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #4facfe;
+    transition: width 0.3s ease;
+}
+
+/* hover */
+.nav-animated a:hover {
+    color: #4facfe;
+    text-shadow: 0 0 10px rgba(79, 172, 254, 0.8);
+}
+
+.nav-animated a:hover::after {
+    width: 100%;
+}
+
+/* entrance animation */
+.nav-animated li {
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: navFade 0.6s ease forwards;
+}
+
+.nav-animated li:nth-child(1) { animation-delay: 0.1s; }
+.nav-animated li:nth-child(2) { animation-delay: 0.2s; }
+.nav-animated li:nth-child(3) { animation-delay: 0.3s; }
+.nav-animated li:nth-child(4) { animation-delay: 0.4s; }
+.nav-animated li:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes navFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-animated {
+    perspective: 800px;
+}
+
+.nav-animated a {
+    display: inline-block;
+    transform-style: preserve-3d;
+    transition:
+        transform 0.3s ease,
+        text-shadow 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* normal depth */
+.nav-animated a {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* hover 3D */
+.nav-animated a:hover {
+    transform:
+        translateY(-3px)
+        rotateX(15deg);
+    text-shadow:
+        0 6px 12px rgba(0,0,0,0.6);
+}
+
+/* press effect */
+.nav-animated a:active {
+    transform:
+        translateY(1px)
+        rotateX(0deg);
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.like-btn.liked {
+    color: crimson;
+    transform: scale(1.2);
+}
+
+.liked-text {
+    font-size: 0.9rem;
+    color: #ff4d4d;
+    margin-left: 6px;
+}
+
+.gallery img,
+.photo-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.poptrox-popup .inner {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.poptrox-popup img {
+    display: block;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
+}
+
+.poptrox-popup .caption {
+    display: none !important;
+}
+
+.poptrox-popup .pic {
+    line-height: 0;
+}
+
+.poptrox-popup {
+    padding-bottom: 0 !important;
+}
