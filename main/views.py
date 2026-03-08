@@ -19,6 +19,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from .forms import UserUpdateForm
+from django.contrib.auth import login
 
 
 @login_required
@@ -71,14 +72,22 @@ def index(request):
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
+
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            user = form.save()
+
+            login(request, user)
+
+            return redirect("index")
+        else:
+            messages.error(request, "Помилка реєстрації")
+
     else:
         form = CustomUserCreationForm()
 
-    return render(request, "main/signup.html", {"form": form})
-
+    return render(request, "main/signup.html", {
+        "form": form
+    })
 
 @login_required
 def profile(request):
