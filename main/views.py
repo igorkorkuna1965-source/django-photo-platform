@@ -70,20 +70,18 @@ def index(request):
     })
 
 def signup(request):
+    form = CustomUserCreationForm()
+
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
 
         if form.is_valid():
             user = form.save()
-
             login(request, user)
-
             return redirect("index")
-        else:
-            messages.error(request, "Помилка реєстрації")
 
-    else:
-        form = CustomUserCreationForm()
+        else:
+            print(form.errors)  # ⭐ Додай це
 
     return render(request, "main/signup.html", {
         "form": form
