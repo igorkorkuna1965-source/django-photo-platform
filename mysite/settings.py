@@ -32,11 +32,11 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
+    "django-photo-platform-1.onrender.com",
     "django-photo-platform.onrender.com",
     "localhost",
     "127.0.0.1"
 ]
-
 
 # Application definition
 
